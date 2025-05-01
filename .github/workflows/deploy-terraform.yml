@@ -1,0 +1,47 @@
+name: Infra Terraform
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Criar infra e fazer deploy
+    runs-on: ubuntu-latest
+
+    if: github.repository == '/Vanieltk/teste' && github.actor == 'Vanieltk'
+
+    env:
+      AWS_REGION: sa-east-1
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Login AWS
+        run: |
+          echo "Configurando AWS CLI"
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set region $AWS_REGION
+
+      - name: Criar terraform.tfvars com Secrets
+        working-directory: terraform
+        run: |
+          cat > terraform.tfvars <<EOF
+          ami_id      = "ami-0d866da98d63e2b42"
+          key_name    = "${{ secrets.AWS_KEY_NAME }}"
+          subnet_id   = "${{ secrets.SUBNET_ID }}"
+          my_ip       = "${{ secrets.MY_PUBLIC_IP }}"
+          vpc-id      = "${{ secrets.VPC_ID}}"
+          EOF
+
+      - name: Inicializar Terraform
+        working-directory: terraform
+        run: terraform init
+
+      - name: Aplicar Terraform
+        working-directory: terraform
+        run: terraform apply -auto-approve
