@@ -8,8 +8,6 @@ jobs:
     name: Criar infra e fazer deploy
     runs-on: ubuntu-latest
 
-    if: github.repository == '/Vanieltk/teste' && github.actor == 'Vanieltk'
-
     env:
       AWS_REGION: sa-east-1
 
