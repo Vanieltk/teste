@@ -36,9 +36,7 @@ jobs:
           EOF
 
       - name: Inicializar Terraform
-        working-directory: terraform
         run: terraform init
 
       - name: Aplicar Terraform
-        working-directory: terraform
         run: terraform apply -auto-approve
