@@ -26,7 +26,6 @@ jobs:
           aws configure set region $AWS_REGION
 
       - name: Criar terraform.tfvars com Secrets
-        working-directory: terraform
         run: |
           cat > terraform.tfvars <<EOF
           ami_id      = "ami-0d866da98d63e2b42"
