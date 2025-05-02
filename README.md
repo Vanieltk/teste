@@ -1,3 +1,45 @@
+# Terraform AWS EC2 Setup
+
+Este projeto provisiona uma instância EC2 na AWS utilizando Terraform, com pipeline automatizado via GitHub Actions.
+
+## Tecnologias utilizadas
+
+- Terraform (>= 1.0.0)
+- AWS (EC2, VPC, Subnet, Security Groups)
+- GitHub Actions
+
+## Pré-requisitos
+
+- Conta AWS com permissões para EC2, VPC e Subnet
+- Chave SSH configurada na AWS
+- Repositório GitHub com os seguintes **Secrets** definidos:
+  - `AWS_ACCESS_KEY_ID`
+  - `AWS_SECRET_ACCESS_KEY`
+  - `AWS_KEY_NAME`
+  - `SUBNET_ID`
+  - `MY_PUBLIC_IP`
+  - `VPC_ID`
+
+## Como instalar e usar
+
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/seu-usuario/seu-repositorio.git
+   cd seu-repositorio
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Infra Challenge 20240202
 
 ## Introdução
