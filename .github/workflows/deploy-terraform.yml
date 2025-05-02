@@ -2,15 +2,6 @@ name: Infra Terraform
 
 on:
   workflow_dispatch:
-    inputs:
-      action:
-        description: 'Ação a executar'
-        required: true
-        default: apply
-        type: choice
-        options:
-          - apply
-          - destroy
 
 jobs:
   deploy:
@@ -33,7 +24,6 @@ jobs:
           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws configure set region $AWS_REGION
-
       - name: Criar terraform.tfvars com Secrets
         run: |
           cat > terraform.tfvars <<EOF
@@ -43,20 +33,8 @@ jobs:
           my_ip       = "${{ secrets.MY_PUBLIC_IP }}"
           vpc_id      = "${{ secrets.VPC_ID}}"
           EOF
-
       - name: Inicializar Terraform
         run: terraform init
 
-      - name: Executar ação escolhida
-        run: |
-          if [ "${{ github.event.inputs.action }}" = "apply" ]; then
-            echo "Executando: terraform apply"
-            terraform apply -auto-approve -input=false -lock=false -no-color
-          elif [ "${{ github.event.inputs.action }}" = "destroy" ]; then
-            echo "Executando: terraform destroy"
-            terraform destroy -auto-approve -input=false -lock=false -no-color
-          else
-            echo "Ação inválida: ${{ github.event.inputs.action }}"
-            exit 1
-          fi
-      
+      - name: Aplicar Terraform (modo verboso)
+        run: terraform apply -auto-approve -input=false -lock=false -no-color
